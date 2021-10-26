@@ -5,15 +5,25 @@ Build guide
 
 The following packages are required on the build machine:
 
-sudo apt install gawk wget git-core diffstat unzip texinfo gcc-multilib \
-build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
-xz-utils debianutils iputils-ping
+```
+sudo apt install docker-compose openssh-client git
+```
 
-The build procedure assumes password-less access to git, so add the key known to
-your github account:
+The build procedure assumes password-less access to git. So, if you still not have SSH key, run:
 
-eval `ssh-agent -s`
-ssh-add ~/.ssh/id_ed25519
+```
+ssh-keygen -f id_rsa
+eval "$(ssh-agent -s)"
+ssh-add id_rsa
+```
+and [add id_rsa.pub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) 
+to your github account
+
+If you already have the key for the github, copy it to the current directory
+```shell
+cp ~/.ssh/id_rda id_rsa
+```
+it will be used in docker container
 
 ## Checkout Yocto components
 
@@ -62,8 +72,8 @@ Prepare the build environment script, for ex. work_yocto.env:
 export TEMPLATECONF=meta-recovery/conf
 # Supported targets: mitx, sfbt1, msbt2, mrbt1, mitx, rt1mb, azure, tc-sfbt1,
 # tc-msbt2, cnc-sfbt1, cnc-msbt2, axt1-sfbt1, axt1-msbt2, bc3bt1-mrbt1, bfk,
-# bfkx, bfk3
-export MACHINE=mitx
+# bfkx, bfk3, em406-b
+export MACHINE=em406-b
 export BB_NUMBER_THREADS=$(nproc)
 export PARALLEL_MAKE="-j ${BB_NUMBER_THREADS}"
 PS1=`echo $PS1 | sed -e 's/\['${MACHINE}'\] //g'`
@@ -77,7 +87,15 @@ PS1="[${MACHINE}] $PS1 "
 #export no_proxy='example.com'
 ```
 Note, that you need to choose the appropriate build target in the script. In this case it is
-'mitx'.
+'em406-b'.
+
+Now build and run the build container:
+
+```shell
+cd ..  # meta-baikal-t must be current directory
+sudo docker-compose build
+sudo docker-compose run yocto /bin/bash
+```
 
 Source the build environment script
 ```
@@ -173,48 +191,4 @@ So, to re-fetch, run:
  bitbake -C fetch linux-yocto
 and then rebuild ROM:
  bitbake baikal-image-recovery
-```
-
-## How to build under docker
-
-```
-The Yocto Project 2.5  ("Sumo"), which is the base for our code, is too old to
-be built on modern Linux (Debian 11). Specifically, GCC 10.x is too demanding to
-the old Yocto code and fails to build the environment.  One option to run the
-build in a docker containter. The docker image is prepared by us and is based on
-Debian 10 which has an older GCC version. Download it and start the container:
-
-$ docker run -it -d -v /home/ndz/t8/yocto:/mnt/srcroot --name bb xxor/buster-builder:1.0 /bin/bash
-$ docker exec -it bb /bin/bash
-
-Note that the above assumes the yocto home dir is mapped to /mnt/srcroot inside
-the container.
-
-Install prereqs:
-# apt update
-# apt install gawk wget git-core diffstat unzip texinfo gcc-multilib \
-build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
-xz-utils debianutils iputils-ping locales
-
-# locale-gen en_US.UTF-8
-# dpkg-reconfigure locales
-
-Once inside the container, create user: 
-# adduser ndz
-# su - ndz
-
-Create the ssh key and transfer the public part to your github profile.
-$ ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519 -C "john@example.com"
-(Note: Do not do this if the key is already present).
-
-Add the ssh key that is known to github server:
-$ eval `ssh-agent -s`
-$ ssh-add ~/.ssh/id_ed25519
-
-Then build yocto as usual:
-
-$ cd /mnt/srcroot
-$ . work_yocto.env
-$ . ./oe-init-build-env
-bitbake baikal-image-recovery
 ```

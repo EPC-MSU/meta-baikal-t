@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  yocto:
+    container_name: yo
+    build: .
+    volumes:
+      - ./yocto:/home/yocto

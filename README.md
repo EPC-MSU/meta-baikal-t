@@ -1,5 +1,7 @@
 # OpenEmbedded/Yocto layer for the Baikal-T(1) SoC
 
+Baikal build instructions: [build-yocto-github.md](build-yocto-github.md)
+
 ## Dependencies
 
 - [openembedded-core](https://github.com/openembedded/openembedded-core)
