@@ -26,43 +26,43 @@ cp ~/.ssh/id_rda id_rsa
 it will be used in docker container
 
 ## Checkout Yocto components
-
-$ mkdir yocto
-$ cd yocto
-
+```
+mkdir yocto
+cd yocto
+```
 * **oe-core** - base Yocto layer, with functional classes of the build system
 and reciped of the basic packages. Note that it is checked-out to the current
 dir:
 ```
-git clone git@github.com:Elpitech/oe-core.git .
+git clone https://github.com/EPC-MSU/oe-core
 ```
 
 * **bitbake** - set of python scripts for the build system. Check-out to
 the directory named bitbake:
 ```
-git clone git@github.com:Elpitech/bitbake.git bitbake
+git clone https://github.com/EPC-MSU/bitbake bitbake
 ```
 
 * **meta-baikal-t** - recipes for the cross toolchain, kernel and the U-Boot
   bootloader.
 ```
-git clone git@github.com:Elpitech/meta-baikal-t.git meta-baikal-t
+git clone https://github.com/EPC-MSU/meta-baikal-t meta-baikal-t
 ```
 
 * **meta-recovery** - recipes to build the Yocto-based recovery ROM.
 ```
-git clone git@github.com:Elpitech/meta-recovery.git meta-recovery
+git clone https://github.com/EPC-MSU/meta-recovery meta-recovery
 ```
 
 * **meta-openembedded** - recipes for verious useful utils that are not part
   of the base layer.
 ```
-git clone git@github.com:Elpitech/meta-openembedded.git meta-openembedded
+git clone https://github.com/EPC-MSU/meta-openembedded meta-openembedded
 ```
 
 * **meta-micropython** - recipes for micropython build.
 ```
-git clone git@github.com:Elpitech/meta-micropython.git meta-micropython
+git clone https://github.com/EPC-MSU/meta-micropython meta-micropython
 ```
 
 ## Configure the build environment
@@ -92,7 +92,7 @@ Note, that you need to choose the appropriate build target in the script. In thi
 Now build and run the build container:
 
 ```shell
-cd ..  # meta-baikal-t must be current directory
+cd meta-baikal-t	# meta-baikal-t must be current directory
 sudo docker-compose build
 sudo docker-compose run yocto /bin/bash
 ```
