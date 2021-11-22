@@ -9,12 +9,6 @@ The following packages are required on the build machine:
 sudo apt install docker-compose openssh-client git
 ```
 
-Create any empty directory in meta-baikal-t, for example, yocto_build:
-```shell
-mkdir yocto_build
-cd yocto_build
-```
-
 The build procedure assumes password-less access to git. So, if you still not have SSH key, run:
 
 ```
@@ -40,35 +34,35 @@ cd yocto
 and reciped of the basic packages. Note that it is checked-out to the current
 dir:
 ```
-git clone git@github.com:Elpitech/oe-core.git .
+git clone git@github.com:EPC-MSU/oe-core.git .
 ```
 
 * **bitbake** - set of python scripts for the build system. Check-out to
 the directory named bitbake:
 ```
-git clone git@github.com:Elpitech/bitbake.git bitbake
+git clone git@github.com:EPC-MSU/bitbake.git bitbake
 ```
 
 * **meta-baikal-t** - recipes for the cross toolchain, kernel and the U-Boot
   bootloader.
 ```
-git clone git@github.com:Elpitech/meta-baikal-t.git meta-baikal-t
+git clone git@github.com:EPC-MSU/meta-baikal-t.git meta-baikal-t
 ```
 
 * **meta-recovery** - recipes to build the Yocto-based recovery ROM.
 ```
-git clone git@github.com:Elpitech/meta-recovery.git meta-recovery
+git clone git@github.com:EPC-MSU/meta-recovery.git meta-recovery
 ```
 
 * **meta-openembedded** - recipes for verious useful utils that are not part
   of the base layer.
 ```
-git clone git@github.com:Elpitech/meta-openembedded.git meta-openembedded
+git clone git@github.com:EPC-MSU/meta-openembedded.git meta-openembedded
 ```
 
 * **meta-micropython** - recipes for micropython build.
 ```
-git clone git@github.com:Elpitech/meta-micropython.git meta-micropython
+git clone git@github.com:EPC-MSU/meta-micropython.git meta-micropython
 ```
 
 ## Configure the build environment
@@ -105,7 +99,7 @@ sudo docker-compose run yocto /bin/bash
 
 Source the build environment script
 ```
-$ . ./work_yocto.env
+. ./work_yocto.env
 ```
 
 Source the rest of the Yocto environment and build the Yocto ROM:
