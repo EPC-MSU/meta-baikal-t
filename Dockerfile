@@ -1,7 +1,7 @@
 FROM xxor/buster-builder:1.0
 
 RUN apt update -y  --allow-releaseinfo-change && \
-    apt install gawk wget git-core diffstat unzip texinfo gcc-multilib \
+    apt install apt-utils gawk wget git-core diffstat unzip texinfo gcc-multilib \
     build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
     xz-utils debianutils iputils-ping locales -y
 
